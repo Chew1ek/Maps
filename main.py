@@ -1,6 +1,7 @@
 import sys, requests
 
 from PyQt6 import uic  # Импортируем uic
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QMainWindow
 
@@ -21,7 +22,7 @@ class MapSearcher(QMainWindow):
         lat = self.lat.text()
         delta1 = self.spn.text()
         delta2 = self.spn.text()
-        apikey = "f3a0fe3a-b07e-4840-a1da-06f18b2ddf13"
+        apikey = "e2a0aacc-0eb4-49b9-93c9-4caa526805a3"
 
         params = {
             "ll": ",".join([lon, lat]),
@@ -39,6 +40,12 @@ class MapSearcher(QMainWindow):
 
         self.pixmap = QPixmap(self.map_file)
         self.map_label.setPixmap(self.pixmap)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_PageUp:
+            print(1)
+        if event.key() == Qt.Key.Key_PageDown:
+            pass
 
 
 if __name__ == '__main__':
