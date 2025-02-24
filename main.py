@@ -1,4 +1,6 @@
-import sys, requests
+import requests
+import sys
+from geocoder_find_map_params import get_map_params
 
 from PyQt6 import uic  # Импортируем uic
 from PyQt6.QtCore import Qt
@@ -27,6 +29,8 @@ class MapSearcher(QMainWindow):
         delta1 = str(float(self.spn.text()))
         delta2 = str(float(self.spn.text()))
         apikey = "e2a0aacc-0eb4-49b9-93c9-4caa526805a3"
+        self.toponym_to_find = self.toponym.text()
+        print(self.toponym_to_find)
 
         params = {
             "ll": ",".join([lon, lat]),
