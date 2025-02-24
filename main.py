@@ -43,6 +43,8 @@ class MapSearcher(QMainWindow):
         self.map_label.setPixmap(self.pixmap)
 
     def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            exit()
         if event.key() == Qt.Key.Key_PageUp:
             val = float(self.spn.text())
             res = val + self.delta
