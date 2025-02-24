@@ -11,7 +11,10 @@ class MapSearcher(QMainWindow):
         super().__init__()
         uic.loadUi('mainwindow.ui', self)
         self.searchButton.clicked.connect(self.run)
+        self.checkBox.stateChanged.connect(self.getImage)
         self.delta = 1
+        self.delta_ll = 0.5
+
 
     def run(self):
         self.getImage()
@@ -21,13 +24,14 @@ class MapSearcher(QMainWindow):
         api_server = "https://static-maps.yandex.ru/v1"
         lon = self.lon.text()
         lat = self.lat.text()
-        delta1 = str(float(self.spn.text()) + float(self.delta))
-        delta2 = str(float(self.spn.text()) + float(self.delta))
+        delta1 = str(float(self.spn.text()))
+        delta2 = str(float(self.spn.text()))
         apikey = "e2a0aacc-0eb4-49b9-93c9-4caa526805a3"
 
         params = {
             "ll": ",".join([lon, lat]),
             "spn": ",".join([delta1, delta2]),
+            'theme': 'dark' if self.checkBox.isChecked() else 'light',
             "apikey": apikey,
         }
         response = requests.get(api_server, params=params)
@@ -45,6 +49,7 @@ class MapSearcher(QMainWindow):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
             exit()
+
         if event.key() == Qt.Key.Key_PageUp:
             val = float(self.spn.text())
             res = val + self.delta
@@ -58,6 +63,31 @@ class MapSearcher(QMainWindow):
             res = max(0.001, round(res, 2))
             self.spn.setText(str(res))
             self.getImage()
+
+        if event.key() == Qt.Key.Key_Down:
+            val_lat = float(self.lat.text())
+            val_lat -= self.delta_ll * float(self.spn.text())
+            self.lat.setText(str(val_lat))
+            self.getImage()
+
+        if event.key() == Qt.Key.Key_Up:
+            val_lat = float(self.lat.text())
+            val_lat += self.delta_ll * float(self.spn.text())
+            self.lat.setText(str(val_lat))
+            self.getImage()
+
+        if event.key() == Qt.Key.Key_Left:
+            val_lon = float(self.lon.text())
+            val_lon -= self.delta_ll * float(self.spn.text())
+            self.lon.setText(str(val_lon))
+            self.getImage()
+
+        if event.key() == Qt.Key.Key_Right:
+            val_lon = float(self.lon.text())
+            val_lon += self.delta_ll * float(self.spn.text())
+            self.lon.setText(str(val_lon))
+            self.getImage()
+
 
 
 if __name__ == '__main__':
